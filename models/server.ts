@@ -2,6 +2,7 @@ import express, { Application } from 'express';
 import cors from 'cors';
 // as a default import, can rename it as i like
 import userRoutes from '../routes/user';
+import db from '../db/connection';
 
 class Server {
   // i have o declare attributes before using
@@ -15,8 +16,18 @@ class Server {
     this.app = express();
     this.port = process.env.PORT || '8000';
     // initial methods
+    this.dbConnection();
     this.middlewares();
     this.routes();
+  }
+
+  async dbConnection() {
+    try {
+      await db.authenticate();
+      console.log('Database online');
+    } catch (error) {
+      throw new Error('Unable to connect to the database');
+    }
   }
 
   middlewares() {
