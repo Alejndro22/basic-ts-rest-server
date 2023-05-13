@@ -79,12 +79,27 @@ const putUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.putUser = putUser;
-const deleteUser = (req, res) => {
+const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    res.json({
-        msg: 'deleteUser',
-        id,
-    });
-};
+    try {
+        const user = yield user_1.default.findByPk(id);
+        if (!user) {
+            return res.status(400).json({
+                msg: `user with id:${id} is not registered`,
+            });
+        }
+        yield user.update({ status: false });
+        res.status(201).json({
+            ok: true,
+            user,
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: 'Contact Admin',
+        });
+    }
+});
 exports.deleteUser = deleteUser;
 //# sourceMappingURL=users.js.map

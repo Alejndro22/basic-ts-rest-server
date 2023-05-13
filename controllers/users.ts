@@ -71,12 +71,28 @@ const putUser = async (req: Request, res: Response) => {
   }
 };
 
-const deleteUser = (req: Request, res: Response) => {
+const deleteUser = async (req: Request, res: Response) => {
   const { id } = req.params;
-  res.json({
-    msg: 'deleteUser',
-    id,
-  });
+  try {
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(400).json({
+        msg: `user with id:${id} is not registered`,
+      });
+    }
+
+    await user.update({ status: false });
+
+    res.status(201).json({
+      ok: true,
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      msg: 'Contact Admin',
+    });
+  }
 };
 
 export { getUsers, getUser, postUser, putUser, deleteUser };

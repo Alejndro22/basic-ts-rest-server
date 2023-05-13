@@ -8,7 +8,7 @@ const User = db.define('User', {
   unique_email: {
     type: DataTypes.STRING,
   },
-  state: {
+  status: {
     type: DataTypes.BOOLEAN,
   },
 });

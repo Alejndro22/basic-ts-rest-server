@@ -12,7 +12,7 @@ const User = connection_1.default.define('User', {
     unique_email: {
         type: sequelize_1.DataTypes.STRING,
     },
-    state: {
+    status: {
         type: sequelize_1.DataTypes.BOOLEAN,
     },
 });
