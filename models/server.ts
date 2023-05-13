@@ -1,4 +1,5 @@
 import express, { Application } from 'express';
+import cors from 'cors';
 // as a default import, can rename it as i like
 import userRoutes from '../routes/user';
 
@@ -13,8 +14,18 @@ class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT || '8000';
-    // define my routes
+    // initial methods
+    this.middlewares();
     this.routes();
+  }
+
+  middlewares() {
+    // CORS
+    this.app.use(cors());
+    // Body parse - to be able to use JSON
+    this.app.use(express.json());
+    // Public folder
+    this.app.use(express.static('public'));
   }
 
   routes() {
