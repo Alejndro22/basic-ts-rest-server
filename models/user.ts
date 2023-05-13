@@ -5,7 +5,7 @@ const User = db.define('User', {
   name: {
     type: DataTypes.STRING,
   },
-  email: {
+  unique_email: {
     type: DataTypes.STRING,
   },
   state: {

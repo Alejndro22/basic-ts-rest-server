@@ -9,7 +9,7 @@ const User = connection_1.default.define('User', {
     name: {
         type: sequelize_1.DataTypes.STRING,
     },
-    email: {
+    unique_email: {
         type: sequelize_1.DataTypes.STRING,
     },
     state: {

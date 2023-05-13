@@ -30,23 +30,54 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getUser = getUser;
-const postUser = (req, res) => {
+const postUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
-    res.json({
-        msg: 'postUser',
-        body,
-    });
-};
+    try {
+        const emailExists = yield user_1.default.findOne({
+            where: { unique_email: body.unique_email },
+        });
+        if (emailExists) {
+            return res.status(400).json({
+                msg: `Email ${body.unique_email} is already registered`,
+            });
+        }
+        const user = yield user_1.default.create(body);
+        res.status(201).json({
+            ok: true,
+            user,
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: 'Contact Admin',
+        });
+    }
+});
 exports.postUser = postUser;
-const putUser = (req, res) => {
+const putUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const { body } = req;
-    res.json({
-        msg: 'putUser',
-        id,
-        body,
-    });
-};
+    try {
+        const user = yield user_1.default.findByPk(id);
+        if (!user) {
+            return res.status(400).json({
+                msg: `user with id:${id} is not registered`,
+            });
+        }
+        yield user.update(body);
+        res.status(201).json({
+            ok: true,
+            user,
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: 'Contact Admin',
+        });
+    }
+});
 exports.putUser = putUser;
 const deleteUser = (req, res) => {
     const { id } = req.params;
